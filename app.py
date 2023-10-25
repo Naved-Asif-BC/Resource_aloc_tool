@@ -57,5 +57,5 @@ def get_response():
     return {'response': assistant_response}
 
 if __name__ == '__main__':
-    app.run(debug=True,port=8080)
+    app.run(debug=True,host='0.0.0.0')
 
