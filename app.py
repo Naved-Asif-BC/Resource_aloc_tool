@@ -1,75 +1,29 @@
 from flask import Flask, render_template, request
+from dotenv import load_dotenv
+from data import data  
 import openai
 import os 
-from dotenv import load_dotenv
+
 load_dotenv()
+
 
 app = Flask(__name__)
 
 # Set up OpenAI API credentials
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
-data={
-    "people": [
-        {
-            "Name": "Naved",
-            "Skills": ["Java", "Python", "SQL","Machine Learning","Deep Learning","GenAI","prompt engineering","Power Automate"],
-            "Availability": "False"
-        },
-        {
-            "Name": "Yash",
-            "Skills": ["JavaScript", "CSS", "HTML","MongoDB","Angular"],
-            "Availability": "False"
-        },
-        {
-            "Name": "Ronak",
-            "Skills": ["aws", "azure", "ETL","Data Engineering","AWS glue"],
-            "Availability": "False"
-        },
-        {
-            "Name": "Mohit",
-            "Skills": ["Python", "SQL","Machine Learning","Deep Learning","GenAI","prompt engineering","Power virtual agent"],
-            "Availability": "False"
-        },
-        {
-            "Name": "Tanay",
-            "Skills": ["Project Management","Communication","Requirements gathering","Strategy"],
-            "Availability": "True"
-        },
-         {
-            "Name": "Omkar",
-            "Skills": ["Photoshop", "designing", "UI/UX","ETL","analytics","Azure"],
-            "Availability": "True"
-        },
-         {
-            "Name": "Abhishek",
-            "Skills": ["Machine Learning", "Python", "Mongodb","Frontend","Backend","Data analysis"],
-            "Availability": "True"
-        },
-         {
-            "Name": "Sakshi",
-            "Skills": ["Project MAnagement","Team Management","Jira","Product Management","Communication"],
-            "Availability": "True"
-        },
-         {
-            "Name": "Jahanwi",
-            "Skills": ["Python","Machine Learning","Prompt Engineering"],
-            "Availability": "True"
-        }
-    ]
-}
 
 # Initialize conversation list
 conversation = [{'role':'system', 'content':f"""
 You are a resource allocator.
 Analyse the data given below
-{data} 
-and give TOP 3 people suitable for the requirement.
 
+{data}
+ 
+Strictly try to produce results from people whose "availablity" is marked as "True" otherwise you will be PENALISED.
+STRICTLY give TOP 3 people suitable for the requirement.
 Requirement will be given by user.
-
-Do Consider the availbility of the person, otherwise you will be penalised.
-
+Always mention the availabilty of the people.
 """}]
 
 
@@ -103,5 +57,5 @@ def get_response():
     return {'response': assistant_response}
 
 if __name__ == '__main__':
-    app.run(debug=True,host="0.0.0.0")
+    app.run(debug=True,port=8080)
 
